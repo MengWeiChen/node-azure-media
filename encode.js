@@ -28,7 +28,8 @@ var task_presets = [
     'H264 Adaptive Bitrate MP4 Set SD 4x3 for iOS Cellular Only',
     'H264 Smooth Streaming 720p Xbox Live ADK',
     'H264 Smooth Streaming Windows Phone 7 Series',
-    'Thumbnails'
+    'Thumbnails',
+    'H264 Single Bitrate 720p'
 ];
 // http://msdn.microsoft.com/en-us/library/windowsazure/jj129582.aspx
 
