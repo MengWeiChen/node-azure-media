@@ -98,7 +98,7 @@ function AzureBlob(api) {
     };
 
     this.uploadFile= function (filename, filepath, length, done_cb) {
-      this.getUploadUrl(filename, function(err, result) {
+      this.getUploadUrl(filename, function(err, res) {
         //upload the stream
         var path1 = res.path.split('?');
         var sasKey = path1[1];
@@ -118,9 +118,9 @@ function AzureBlob(api) {
                 if (error) {
                     console.log(error)
                 } else {
-                    this.doneUpload(result.assetId, result.locatorId, function(err){
+                    this.doneUpload(res.assetId, res.locatorId, function(err){
                         if (typeof done_cb !== 'undefined') {
-                            done_cb(err, result.assetId);
+                            done_cb(err, res.assetId);
                         }
                     });
                 }
