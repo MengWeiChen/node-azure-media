@@ -3,6 +3,7 @@ var moment = require('moment');
 var url = require('url');
 var request = require('request');
 var uuid = require('node-uuid');
+var AzureStorage = require('azure-storage');
 
 var Readable = require('stream').Readable;
 var Writable = require('stream').Writable;
@@ -93,6 +94,37 @@ function AzureBlob(api) {
           });
         }.bind(this));
         stream.pipe(r);
+      }.bind(this));
+    };
+
+    this.uploadFile= function (filename, filepath, length, done_cb) {
+      this.getUploadUrl(filename, function(err, result) {
+        //upload the stream
+        var path1 = res.path.split('?');
+        var sasKey = path1[1];
+        var path2 = path1[0].split('/');
+        var blobStorageUri = 'https://' + path2[2];
+        var containerName = path2[3];
+
+        var blobService = AzureStorage.createBlobServiceWithSas(blobStorageUri, sasKey).withFilter(new AzureStorage.ExponentialRetryPolicyFilter());
+        var blockSize = fs.statSync(filepath).size > 1024 * 1024 * 32 ? 1024 * 1024 * 4 : 1024 * 512;
+        var options = {
+                storeBlobContentMD5: false,
+                blockSize: blockSize
+            };
+        blobService.singleBlobPutThresholdInBytes = blockSize;
+        blobService.createBlockBlobFromStream(containerName, filename, fs.createReadStream(filepath), fs.statSync(filepath).size, options,
+            function (error, result, response) {
+                if (error) {
+                    console.log(error)
+                } else {
+                    this.doneUpload(result.assetId, result.locatorId, function(err){
+                        if (typeof done_cb !== 'undefined') {
+                            done_cb(err, result.assetId);
+                        }
+                    });
+                }
+            }.bind(this));
       }.bind(this));
     };
 

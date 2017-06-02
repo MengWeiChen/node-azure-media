@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "async": "^0.2.10",
+    "azure-storage": "^2.1.0",
     "moment": "^2.8.3",
     "node-uuid": "^1.4.1",
     "nodeunit": "^0.8.6",
