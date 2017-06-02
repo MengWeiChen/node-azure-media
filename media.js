@@ -4,6 +4,7 @@ var url = require('url');
 var request = require('request');
 var uuid = require('node-uuid');
 var AzureStorage = require('azure-storage');
+var fs = require('fs');
 
 var Readable = require('stream').Readable;
 var Writable = require('stream').Writable;
